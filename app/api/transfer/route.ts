@@ -1,13 +1,12 @@
 import { createServer } from "@/lib/supabaseServer";
 import { NextRequest, NextResponse } from "next/server";
-import { use } from "react";
 import z from "zod";
 
 export async function POST(req: NextRequest) {
     const supabase = await createServer();
 
     const transferDetails = z.object({
-        amount: z.number().min(1,"Amount should be at least 1"),
+        amount: z.coerce.number().min(1,"Amount should be at least 1"),
         receiver: z.string().email("Enter the correct format for the email")
     })
 
@@ -43,9 +42,14 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({message: "Receiver's wallet not found"}, {status: 404})
     }
 
-    if(userWallet.balance < body.amount){
-        return NextResponse.json({message: "Insufficient balance"}, {status: 400})
+    const { error } = await supabase.rpc("transfer_money",{
+        sender: userData.user.id,
+        receiver: receiver.id,
+        amount: body.amount
+    })
+    if(error){
+        return NextResponse.json({message: "Could not transfer now try again later"}, {status: 400})
     }
     
-    return NextResponse.json({messgae: "transaction done!", body, sendermail: userData.user?.email, name: "ashish"})
+    return NextResponse.json({message: `transaction done! ${body.amount} sent from ${userData.user.email} to ${body.receiver}`})
 }
