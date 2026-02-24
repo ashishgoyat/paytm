@@ -2,6 +2,14 @@
 import { createClient } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Card } from "@/components/ui/card";
 
 
 export default function Login() {
@@ -28,10 +36,36 @@ export default function Login() {
   }
 
   return <div>
+    <div className="text-center font-bold text-5xl my-10">Login</div>
+  <Card className="mx-auto w-full max-w-md p-10">
     <form onSubmit={handleLogin}>
-      <input type="email" placeholder="enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button type="submit">Login</button>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor="fieldgroup-email">Email</FieldLabel>
+          <Input
+            id="fieldgroup-email"
+            type="email"
+            placeholder="name@example.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="fieldgroup-password">Password</FieldLabel>
+          <Input
+            id="fieldgroup-password"
+            type="password"
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Field>
+        <Field orientation="horizontal">
+          <Button type="reset" variant="outline">
+            Reset
+          </Button>
+          <Button type="submit">Login</Button>
+        </Field>
+      </FieldGroup>
     </form>
+  </Card>
   </div>
 }
