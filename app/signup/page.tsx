@@ -1,6 +1,6 @@
 "use client";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card";
 import { ModeToggle } from "@/components/ui/themetoggle";
+import Link from "next/link";
 
 
 export default function Signup() {
@@ -68,6 +69,9 @@ export default function Signup() {
             Reset
           </Button>
           <Button type="submit">Signup</Button>
+          <Link href={"/login"}>
+          <Button variant={"link"}>Already have account?</Button>
+          </Link>
         </Field>
       </FieldGroup>
     </form>
