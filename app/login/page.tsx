@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card";
+import { ModeToggle } from "@/components/ui/themetoggle";
 
 
 export default function Login() {
@@ -36,6 +37,9 @@ export default function Login() {
   }
 
   return <div>
+    <div className="p-3">
+    <ModeToggle />
+    </div>
     <div className="text-center font-bold text-5xl my-10">Login</div>
   <Card className="mx-auto w-full max-w-md p-10">
     <form onSubmit={handleLogin}>

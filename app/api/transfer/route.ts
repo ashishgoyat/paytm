@@ -23,23 +23,10 @@ export async function POST(req: NextRequest) {
     }
 
     const body = result.data;
-    if(body.receiver == userData.user?.email){
-        return NextResponse.json({message: "You can't send it to yourself"}, {status: 400});
-    }
 
     const { data: receiver, error: receiverError } = await supabase.from("profiles").select("*").eq("email", body.receiver).single();    
     if(receiverError || !receiver) {
         return NextResponse.json({message: "Receiver not found"}, {status: 404})
-    }
-
-    const { data: userWallet, error: userWalletError} = await supabase.from("wallets").select("*").eq("user_id", userData.user.id).single();
-    if(!userWallet || userWalletError){
-        return NextResponse.json({message: "Your wallet not found"}, {status: 404})
-    }
-
-    const { data: receiverWallet, error: receiverWalletError} = await supabase.from("wallets").select("*").eq("user_id", receiver.id).single();
-    if(!receiverWallet || receiverWalletError){
-        return NextResponse.json({message: "Receiver's wallet not found"}, {status: 404})
     }
 
     const { error } = await supabase.rpc("transfer_money",{
@@ -48,7 +35,7 @@ export async function POST(req: NextRequest) {
         amount: body.amount
     })
     if(error){
-        return NextResponse.json({message: "Could not transfer now try again later"}, {status: 400})
+        return NextResponse.json({message: error.message}, {status: 400})
     }
     
     return NextResponse.json({message: `transaction done! ${body.amount} sent from ${userData.user.email} to ${body.receiver}`})

@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
         })
 
     const { data: user, error: userError} = await supabase.auth.getUser();
-    if(!user || userError) {
+    if(!user?.user || userError) {
         return NextResponse.json({message: "User not logged in"}, {status: 401});
     }
 
@@ -28,13 +28,13 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({message: "Could not find wallet try again"}, {status: 500});
     }
 
-    const new_balance = result.data.amount + data.balance
+    const new_balance = Number(result.data.amount) + data.balance
     const { error } = await supabase.rpc('update_wallet_balance', {
         wallet_id: data.id,
-        new_balance 
+        new_balance: new_balance
     })
     if(error) {
         return NextResponse.json({message: "Error in updating balance try again"}, {status: 500});
     }
-    return NextResponse.json({message: "Balance updated"});
+    return NextResponse.json({user: userId, data, new_balance});
 }

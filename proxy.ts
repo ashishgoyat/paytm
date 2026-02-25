@@ -11,7 +11,11 @@ export async function proxy(req: NextRequest) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    response.headers.set("user-email", data.user.email || "");
+
+    return response;
 }
 
 export const config = {

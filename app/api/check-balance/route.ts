@@ -1,6 +1,7 @@
 import { createServer } from "@/lib/supabaseServer";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
 
 export async function GET() {
     const supabase = await createServer();
@@ -16,5 +17,5 @@ export async function GET() {
     if(!data || error) {
         return NextResponse.json({message: "Could not reach server try again"}, {status: 500});
     }
-    return NextResponse.json({amount: data.balance});
+    return NextResponse.json({balance: data.balance});
 }
