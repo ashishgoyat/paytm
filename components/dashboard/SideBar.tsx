@@ -30,7 +30,7 @@ export function SideBar({email}: {email: string | null}) {
     <Sidebar variant={"floating"}>
       <SidebarHeader>
         <div className="flex justify-between">
-            <div className="font-semibold text-xl">
+            <div className="font-semibold text-l">
                 {email}
             </div>
             <ModeToggle />
