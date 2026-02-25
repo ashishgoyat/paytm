@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Button } from "../ui/button"
 import { ModeToggle } from "../ui/themetoggle"
-import { createClient } from "@/lib/supabaseClient"
+import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 
 export function SideBar({email}: {email: string | null}) {

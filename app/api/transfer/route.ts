@@ -1,9 +1,9 @@
-import { createServer } from "@/lib/supabaseServer";
+import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
 export async function POST(req: NextRequest) {
-    const supabase = await createServer();
+    const supabase = await createClient();
 
     const transferDetails = z.object({
         amount: z.coerce.number().min(1,"Amount should be at least 1"),
